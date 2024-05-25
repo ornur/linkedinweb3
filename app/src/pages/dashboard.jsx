@@ -48,7 +48,10 @@ export const Dashboard = () => {
                 Blog
               </p>
               <img src={user?.avatar} alt="avatar" className="w-8 h-8 rounded-full bg-gray-200 " />
-              <p className=" font-bold text-sm ml-2 capitalize">{user?.name}</p>
+              <p className=" font-bold text-sm ml-2 capitalize" 
+                onClick={() => {
+                      history.push(`/profile`)
+                    }}>{user?.name}</p>
               {initialized ? (
                 <Button className="ml-3 mr-2" onClick={() => setShowModalPost(true)}>
                   Create Post

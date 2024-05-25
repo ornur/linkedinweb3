@@ -9,8 +9,6 @@ import { PublicKey, SystemProgram } from "@solana/web3.js";
 import idl from "src/idl.json";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import {getRandomName} from "src/functions/getRandomName";
-import { getAvatarUrl } from "src/functions/getAvatarUrl";
 import { set } from "lodash-es";
 
 const BlogContext = createContext();
