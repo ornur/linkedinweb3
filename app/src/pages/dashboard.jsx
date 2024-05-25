@@ -2,20 +2,21 @@ import { useWallet } from "@solana/wallet-adapter-react"
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
 import { useEffect, useState } from "react"
 import { Button } from "src/components/Button"
+import { InitializeUser } from "src/components/InitializeUser"
 import { PostForm } from "src/components/PostForm"
 import { useBlog } from "src/context/Blog"
 import { useHistory } from 'react-router-dom'
-
-
 
 export const Dashboard = () => {
   const history = useHistory()
   const [connecting, setConnecting] = useState(false)
   const { connected, select } = useWallet()
+  const [userName, setUserName] = useState("")
+  const [userAvatar, setUserAvatar] = useState("")
   const [postTitle, setPostTitle] = useState("")
   const [postContent, setPostContent] = useState("")
 
-  const { user, initialized, initUser, showModal, setShowModal, createPost, posts } = useBlog()
+  const { user, initialized, initUser, showModalUser, setShowModalUser, showModalPost, setShowModalPost, createPost, posts } = useBlog()
 
   const onConnect = () => {
     setConnecting(true)
@@ -49,11 +50,11 @@ export const Dashboard = () => {
               <img src={user?.avatar} alt="avatar" className="w-8 h-8 rounded-full bg-gray-200 " />
               <p className=" font-bold text-sm ml-2 capitalize">{user?.name}</p>
               {initialized ? (
-                <Button className="ml-3 mr-2" onClick={() => setShowModal(true)}>
+                <Button className="ml-3 mr-2" onClick={() => setShowModalPost(true)}>
                   Create Post
                 </Button>
               ) : (
-                <Button className="ml-3 mr-2" onClick={() => {initUser()}}>
+                <Button className="ml-3 mr-2" onClick={() => setShowModalUser(true)}>
                   Initialize User
                 </Button>
               )}
@@ -139,10 +140,24 @@ export const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className={`modal ${showModal && 'show-modal'}`} >
+        <div className={`modal ${showModalUser && 'show-modal'}`} >
           <div className="modal-content">
             <span className="close-button"
-              onClick={() => setShowModal(false)}
+              onClick={() => setShowModalUser(false)}
+            >×</span>
+            <InitializeUser
+              userName={userName}
+              userAvatar={userAvatar}
+              setUserName={setUserName}
+              setUserAvatar={setUserAvatar}
+              onSubmit={() => initUser(userName, userAvatar)}
+            />
+          </div>
+        </div>
+        <div className={`modal ${showModalPost && 'show-modal'}`} >
+          <div className="modal-content">
+            <span className="close-button"
+              onClick={() => setShowModalPost(false)}
             >×</span>
             <PostForm
               postTitle={postTitle}

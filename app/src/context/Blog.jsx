@@ -30,7 +30,8 @@ export const BlogProvider = ({ children }) => {
   const [user, setUser] = useState()
   const [initialized, setInitialized] = useState(false)
   const [transactionPending, setTransactionPending] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModalUser, setShowModalUser] = useState(false);
+  const [showModalPost, setShowModalPost] = useState(false);
   const [lastPostId, setLastPostId] = useState(0);
   const [posts, setPosts] = useState([]);
 
@@ -79,12 +80,10 @@ export const BlogProvider = ({ children }) => {
     start()
   }, [program, transactionPending, publicKey]);
 
-  const initUser = async ()=>{
+  const initUser = async (name, avatar)=>{
     if(program && publicKey){
       try {
         setTransactionPending(true);
-        const name = getRandomName();
-        const avatar = getAvatarUrl(name);
         const [userPda] = findProgramAddressSync([utf8.encode('user'),publicKey.toBuffer()], program.programId);
         await program.methods
           .initUser(name, avatar)
@@ -95,6 +94,7 @@ export const BlogProvider = ({ children }) => {
           })
           .rpc()
           setInitialized(true);
+          setShowModalUser(false);
       } catch (err) {
         console.error(err);
       } finally {
@@ -120,7 +120,7 @@ export const BlogProvider = ({ children }) => {
           })
           .rpc()
 
-          setShowModal(false);
+          setShowModalPost(false);
       } catch (error) {
         console.error(error);
       } finally{
@@ -135,8 +135,10 @@ export const BlogProvider = ({ children }) => {
         user,
         initialized,
         initUser,
-        showModal,
-        setShowModal,
+        showModalUser,
+        setShowModalUser,
+        showModalPost,
+        setShowModalPost,
         createPost,
         posts,
       }}
