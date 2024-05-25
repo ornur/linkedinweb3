@@ -7,29 +7,13 @@
 - `Yarn`
 - `Git`
 - `Phantom Wallet`
-- `Solana-cli`
-- `AVM with Anchor`
+- `Solana Playground`
 
 ## Getting started
 
 ```
-anchor build
+cd app
+yarn dev
 ```
 
-1. Solana Test Validator
-```bash
-solana-test-validator
-```
-2. Configure the Solana CLI to use the local network:
-```
-solana config set --url localhost
-```
-3. Deploy the program:
-```
-anchor deploy
-```
-4. Run this command inside `app` directory:
-```
-npm start
-```
-GO =>  <a href="localhost:3000">locahost:3000</a>
+Open the link `localhost:3000/`

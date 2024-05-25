@@ -35,7 +35,7 @@ export const Dashboard = () => {
           <h2 className="text-2xl font-bold">
             <div className="bg-clip-text bg-gradient-to-br from-indigo-300 colorpink"
             >
-              Onaki
+              LinkedIn
             </div>
           </h2>
           {connected ? (
