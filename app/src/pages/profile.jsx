@@ -10,6 +10,8 @@ export const Profile = () => {
   const history = useHistory();
   const [connecting, setConnecting] = useState(false);
   const { connected, select } = useWallet();
+  const [userName, setUserName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
 
   const {
     user,
@@ -121,22 +123,19 @@ export const Profile = () => {
                 <div key={index}>{friend.toString()}</div>
               ))}
             </p>
-            {// if friendRequests is empty, don't show the button and <p>
+          {// if friendRequests is empty, don't show the button and <p>
             user?.friendRequests.length > 0 ? (
               <div>
                 <p>Friend Requests:</p>
-                {user.friendRequests.map((request, index) => (
-                  <div key={index}>
-                    {request.toString()}
+                <div>
+                    {user.friendRequests.toString()}
                     <Button
-                      onClick={() => acceptFriendRequest(request)}
+                      onClick={() => acceptFriendRequest(user.friendRequests)}
                       className="ml-2"
                     >
                       <img src="https://img.icons8.com/external-justicon-lineal-justicon/32/external-add-friend-notifications-justicon-lineal-justicon.png" alt="" />
                     </Button>
-                    
-                  </div>
-                ))}
+                </div>
               </div>
             ) : null}
             <div className="user-posts">
