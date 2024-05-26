@@ -31,7 +31,7 @@ export const Dashboard = () => {
     posts,
     sendFriendRequest,
     acceptFriendRequest,
-    searchUserByName,
+    searchUserByNameAndKey,
   } = useBlog();
 
   const onConnect = () => {
@@ -46,10 +46,11 @@ export const Dashboard = () => {
   }, [user]);
 
   const handleSearch = async () => {
-    const results = await searchUserByName(searchQuery);
+    const results = await searchUserByNameAndKey(searchQuery);
     setSearchResults(results);
     setShowSearchModal(true);
   };
+  console.log("results", searchResults);
 
   return (
     <div className="dashboard background-color overflow-auto h-screen">
@@ -244,27 +245,34 @@ export const Dashboard = () => {
             </span>
             <div className="search-results">
               {searchResults.map((result) => (
-                <div key={result.publicKey.toString()} className="each flex rounded shadow w-max text-gray-600 mb-5 bg-white search-result">
-                  <div class="sec self-center p-2 pr-1">
+                <div
+                  key={result.publicKey.toString()}
+                  className="each flex rounded shadow w-max text-pink-600 mb-5 bg-white search-result"
+                >
+                  <div className="sec self-center p-2 pr-1">
                     <img
                       data="picture"
-                      class="h-10 w-10 border p-0.5 rounded-full"
+                      className="h-10 w-10 border p-0.5 rounded-full"
                       src={result.account.avatar}
                       alt=""
                     />
                   </div>
-                  <div class="sec self-center p-2 w-64">
-                    <div class="flex">
-                      <div class="name text-sm">{result.account.name}</div>
+                  <div className="sec self-center p-2 w-48">
+                    <div className="flex">
+                      <div className="name text-sm">{result.account.name}</div>
                     </div>
-                    <div class="title text-xs text-gray-400 -mt-1">{result.account.publicKey}</div>
+                    <div className="title text-xs text-gray-400 -mt-1">
+                      {result.account.publicKey}
+                    </div>
                   </div>
-                  <Button onClick={() => sendFriendRequest(result.publicKey)}>
-                    Send Friend Request
-                  </Button>
-                  <Button onClick={() => acceptFriendRequest(result.publicKey)}>
-                    Accept Friend Request
-                  </Button>
+                  <div className="sec self-center p-2">
+                    <Button onClick={() => sendFriendRequest(result.publicKey)}>
+                      <img
+                        src="https://img.icons8.com/external-justicon-lineal-justicon/32/external-add-friend-notifications-justicon-lineal-justicon.png"
+                        alt="add friend"
+                      />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>

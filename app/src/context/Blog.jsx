@@ -192,40 +192,40 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
-  const searchUserByName = async (name) => {
-    if (program) {
-      try {
-        setTransactionPending(true);
-        const accounts = await connection.getProgramAccounts(program.programId, {
-          filters: [
-            {
-              dataSize: 2312 + 8 + (4 + 32 * 10) + (4 + 32 * 10), // Size of UserAccount
-            },
-          ],
-        });
+  const searchUserByNameAndKey = async (name) => {
+  if (program) {
+    try {
+      setTransactionPending(true);
+      const accounts = await connection.getProgramAccounts(program.programId, {
+        filters: [
+          {
+            dataSize: 2312 + 8 + (4 + 32 * 10) + (4 + 32 * 10), // Size of UserAccount
+          },
+        ],
+      });
 
-        const results = accounts
-          .map((account) => {
-            const userAccount = program.account.userAccount.coder.accounts.decode(
-              "UserAccount",
-              account.account.data
-            );
-            return {
-              publicKey: account.pubkey,
-              account: userAccount,
-            };
-          })
-          .filter((userAccount) => userAccount.account.name === name);
+      const results = accounts
+        .map((account) => {
+          const userAccount = program.account.userAccount.coder.accounts.decode(
+            "UserAccount",
+            account.account.data
+          );
+          return {
+            publicKey: account.pubkey,
+            account: userAccount,
+          };
+        })
+        .filter((userAccount) => userAccount.account.name === name || userAccount.publicKey.toString() === name);
 
-        setSearchResults(results);
-        return results;
-      } catch (error) {
-        console.error("Error searching for user:", error);
-      } finally {
-        setTransactionPending(false);
-      }
+      setSearchResults(results);
+      return results;
+    } catch (error) {
+      console.error("Error searching for user:", error);
+    } finally {
+      setTransactionPending(false);
     }
-  };
+  }
+};
 
   return (
     <BlogContext.Provider
@@ -241,7 +241,7 @@ export const BlogProvider = ({ children }) => {
         posts,
         sendFriendRequest,
         acceptFriendRequest,
-        searchUserByName,
+        searchUserByNameAndKey,
         searchResults,
       }}
     >
