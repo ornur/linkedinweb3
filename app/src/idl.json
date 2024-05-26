@@ -30,6 +30,24 @@
         { "name": "title", "type": "string" },
         { "name": "content", "type": "string" }
       ]
+    },
+    {
+      "name": "sendFriendRequest",
+      "accounts": [
+        { "name": "fromUser", "isMut": true, "isSigner": false },
+        { "name": "toUser", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "acceptFriendRequest",
+      "accounts": [
+        { "name": "fromUser", "isMut": true, "isSigner": false },
+        { "name": "toUser", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -42,7 +60,9 @@
           { "name": "avatar", "type": "string" },
           { "name": "authority", "type": "publicKey" },
           { "name": "lastPostId", "type": "u8" },
-          { "name": "postCount", "type": "u8" }
+          { "name": "postCount", "type": "u8" },
+          { "name": "friendRequests", "type": { "vec": "publicKey" } },
+          { "name": "friends", "type": { "vec": "publicKey" } }
         ]
       }
     },
@@ -60,7 +80,15 @@
       }
     }
   ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "FriendRequestNotFound",
+      "msg": "Friend request not found."
+    },
+    { "code": 6001, "name": "UserNotFound", "msg": "User not found." }
+  ],
   "metadata": {
-      "address": "Ewox5sdhPGwLCKw9jHCxSFmRfatYMRMAwpTB2nYSmTXS"
+      "address": "5zpFZncu37fJwAotvF3ryangdxodisGycEPL7tDRMgba"
   }
 }

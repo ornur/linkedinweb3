@@ -1,63 +1,111 @@
-import { useWallet } from "@solana/wallet-adapter-react"
-import { PhantomWalletName } from "@solana/wallet-adapter-wallets"
-import { useEffect, useState } from "react"
-import { Button } from "src/components/Button"
-import { InitializeUser } from "src/components/InitializeUser"
-import { PostForm } from "src/components/PostForm"
-import { useBlog } from "src/context/Blog"
-import { useHistory } from 'react-router-dom'
+import { useWallet } from "@solana/wallet-adapter-react";
+import { PhantomWalletName } from "@solana/wallet-adapter-wallets";
+import { useEffect, useState } from "react";
+import { Button } from "src/components/Button";
+import { InitializeUser } from "src/components/InitializeUser";
+import { PostForm } from "src/components/PostForm";
+import { useBlog } from "src/context/Blog";
+import { useHistory } from "react-router-dom";
 
 export const Dashboard = () => {
-  const history = useHistory()
-  const [connecting, setConnecting] = useState(false)
-  const { connected, select } = useWallet()
-  const [userName, setUserName] = useState("")
-  const [userAvatar, setUserAvatar] = useState("")
-  const [postTitle, setPostTitle] = useState("")
-  const [postContent, setPostContent] = useState("")
+  const history = useHistory();
+  const [connecting, setConnecting] = useState(false);
+  const { connected, select } = useWallet();
+  const [userName, setUserName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+  const [postTitle, setPostTitle] = useState("");
+  const [postContent, setPostContent] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
-  const { user, initialized, initUser, showModalUser, setShowModalUser, showModalPost, setShowModalPost, createPost, posts } = useBlog()
+  const {
+    user,
+    initialized,
+    initUser,
+    showModalUser,
+    setShowModalUser,
+    showModalPost,
+    setShowModalPost,
+    createPost,
+    posts,
+    sendFriendRequest,
+    acceptFriendRequest,
+    searchUserByName,
+  } = useBlog();
 
   const onConnect = () => {
-    setConnecting(true)
-    select(PhantomWalletName)
-  }
+    setConnecting(true);
+    select(PhantomWalletName);
+  };
 
   useEffect(() => {
     if (user) {
-      setConnecting(false)
+      setConnecting(false);
     }
-  }, [user])
+  }, [user]);
+
+  const handleSearch = async () => {
+    const results = await searchUserByName(searchQuery);
+    setSearchResults(results);
+    setShowSearchModal(true);
+  };
 
   return (
     <div className="dashboard background-color overflow-auto h-screen">
-      <header className="fixed z-10 w-full h-14  shadow-md">
+      <header className="fixed z-10 w-full h-14 shadow-md">
         <div className="flex justify-between items-center h-full container">
           <h2 className="text-2xl font-bold">
-            <div className="bg-clip-text bg-gradient-to-br from-indigo-300 colorpink"
-            >
+            <div className="bg-clip-text bg-gradient-to-br from-indigo-300 colorpink">
               LinkedIn
             </div>
           </h2>
+
+          <div className="search-section">
+            <div className="flex">
+              <input
+                type="search"
+                className="bg-purple-white shadow rounded border-0 p-3 mr-2 text-pink-600"
+                placeholder="Search for users"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Button onClick={handleSearch}>Search</Button>
+            </div>
+          </div>
           {connected ? (
             <div className="flex items-center">
-              <p className=" font-bold text-sm ml-2 capitalize underlinepink">
+              <p className="font-bold text-sm ml-2 capitalize underlinepink">
                 Home
               </p>
-              <p className=" font-bold text-sm ml-2 capitalize mr-4 underlinepink">
+              <p className="font-bold text-sm ml-2 capitalize mr-4 underlinepink">
                 Blog
               </p>
-              <img src={user?.avatar} alt="avatar" className="w-8 h-8 rounded-full bg-gray-200 " />
-              <p className=" font-bold text-sm ml-2 capitalize" 
+              <img
+                src={user?.avatar}
+                alt="avatar"
+                className="w-8 h-8 rounded-full bg-gray-200"
+              />
+              <p
+                className="font-bold text-sm ml-2 capitalize"
                 onClick={() => {
-                      history.push(`/profile`)
-                    }}>{user?.name}</p>
+                  history.push(`/profile`);
+                }}
+              >
+                {user?.name}
+              </p>
               {initialized ? (
-                <Button className="ml-3 mr-2" onClick={() => setShowModalPost(true)}>
+                <Button
+                  className="ml-3 mr-2"
+                  onClick={() => setShowModalPost(true)}
+                >
                   Create Post
                 </Button>
               ) : (
-                <Button className="ml-3 mr-2" onClick={() => setShowModalUser(true)}>
+                <Button
+                  className="ml-3 mr-2"
+                  onClick={() => setShowModalUser(true)}
+                >
                   Initialize User
                 </Button>
               )}
@@ -91,9 +139,7 @@ export const Dashboard = () => {
       </header>
       <main className="dashboard-main pb-4 container flex relative">
         <div className="pt-3">
-          {/* <h1 className="title">The Blog</h1> */}
           <div className="row">
-
             <article className="best-post">
               <div
                 className="best-post-image"
@@ -102,52 +148,66 @@ export const Dashboard = () => {
                 }}
               ></div>
               <div className="best-post-content">
-                <div className="best-post-content-cat">December 2, 2021<span className="dot"> </span>Blog</div>
+                <div className="best-post-content-cat">
+                  December 2, 2021<span className="dot"> </span>Blog
+                </div>
                 <div className="best-post-content-title">
                   Lorem ipsum dolor sit amet, consectetur
                 </div>
                 <div className="best-post-content-sub">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
                 </div>
               </div>
             </article>
 
             <div className="all__posts">
-              {posts.map((item) => {
-                return (
-                  <article className="post__card-2"
-                    onClick={() => {
-                      history.push(`/read-post/${item.publicKey.toString()}`)
-                    }}
-                    key={item.account.id}
-                  >
-                    <div className="post__card_-2">
-                      <div
-                        className="post__card__image-2"
-                        style={{
-                          backgroundImage: `url("https://user-images.githubusercontent.com/62637513/184338539-9cdbdc58-1e72-4c48-8203-0b7ec23d3eb0.png")`,
-                        }}
-                      ></div>
-                      <div>
-                        <div className="post__card_meta-2">
-                          <div className="post__card_cat">December 2, 2021<span className="dot"> </span>{item.account.title} </div>
-                          <p className="post__card_alttitle-2">
-                            {item.account.content}
-                          </p>
+              {posts.map((item) => (
+                <article
+                  className="post__card-2"
+                  onClick={() => {
+                    history.push(`/read-post/${item.publicKey.toString()}`);
+                  }}
+                  key={item.account.id}
+                >
+                  <div className="post__card_-2">
+                    <div
+                      className="post__card__image-2"
+                      style={{
+                        backgroundImage: `url("https://user-images.githubusercontent.com/62637513/184338539-9cdbdc58-1e72-4c48-8203-0b7ec23d3eb0.png")`,
+                      }}
+                    ></div>
+                    <div>
+                      <div className="post__card_meta-2">
+                        <div className="post__card_cat">
+                          December 2, 2021<span className="dot"> </span>
+                          {item.account.title}{" "}
                         </div>
+                        <p className="post__card_alttitle-2">
+                          {item.account.content}
+                        </p>
                       </div>
                     </div>
-                  </article>
-                )
-              })}
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </div>
-        <div className={`modal ${showModalUser && 'show-modal'}`} >
+        <div className={`modal ${showModalUser && "show-modal"}`}>
           <div className="modal-content">
-            <span className="close-button"
+            <span
+              className="close-button"
               onClick={() => setShowModalUser(false)}
-            >×</span>
+            >
+              ×
+            </span>
             <InitializeUser
               userName={userName}
               userAvatar={userAvatar}
@@ -157,11 +217,14 @@ export const Dashboard = () => {
             />
           </div>
         </div>
-        <div className={`modal ${showModalPost && 'show-modal'}`} >
+        <div className={`modal ${showModalPost && "show-modal"}`}>
           <div className="modal-content">
-            <span className="close-button"
+            <span
+              className="close-button"
               onClick={() => setShowModalPost(false)}
-            >×</span>
+            >
+              ×
+            </span>
             <PostForm
               postTitle={postTitle}
               postContent={postContent}
@@ -171,7 +234,43 @@ export const Dashboard = () => {
             />
           </div>
         </div>
+        <div className={`modal ${showSearchModal && "show-modal"}`}>
+          <div className="modal-content">
+            <span
+              className="close-button"
+              onClick={() => setShowSearchModal(false)}
+            >
+              ×
+            </span>
+            <div className="search-results">
+              {searchResults.map((result) => (
+                <div key={result.publicKey.toString()} className="each flex rounded shadow w-max text-gray-600 mb-5 bg-white search-result">
+                  <div class="sec self-center p-2 pr-1">
+                    <img
+                      data="picture"
+                      class="h-10 w-10 border p-0.5 rounded-full"
+                      src={result.account.avatar}
+                      alt=""
+                    />
+                  </div>
+                  <div class="sec self-center p-2 w-64">
+                    <div class="flex">
+                      <div class="name text-sm">{result.account.name}</div>
+                    </div>
+                    <div class="title text-xs text-gray-400 -mt-1">{result.account.publicKey}</div>
+                  </div>
+                  <Button onClick={() => sendFriendRequest(result.publicKey)}>
+                    Send Friend Request
+                  </Button>
+                  <Button onClick={() => acceptFriendRequest(result.publicKey)}>
+                    Accept Friend Request
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </main>
     </div>
-  )
-}
+  );
+};
