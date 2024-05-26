@@ -155,6 +155,7 @@ export const BlogProvider = ({ children }) => {
             systemProgram: SystemProgram.programId,
           })
           .rpc();
+          setShowSearchModal(false);
       } catch (error) {
         console.error(error);
       } finally {
@@ -167,10 +168,7 @@ export const BlogProvider = ({ children }) => {
     if (program && publicKey) {
       setTransactionPending(true);
       try {
-        const [fromUserPda] = findProgramAddressSync(
-          [utf8.encode("user"), fromUserPublicKey.toBuffer()],
-          program.programId
-        );
+        const [fromUserPda] = fromUserPublicKey;
         const [toUserPda] = findProgramAddressSync(
           [utf8.encode("user"), publicKey.toBuffer()],
           program.programId

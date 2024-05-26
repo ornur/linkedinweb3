@@ -30,7 +30,6 @@ export const Dashboard = () => {
     createPost,
     posts,
     sendFriendRequest,
-    acceptFriendRequest,
     searchUserByNameAndKey,
   } = useBlog();
 
@@ -50,7 +49,6 @@ export const Dashboard = () => {
     setSearchResults(results);
     setShowSearchModal(true);
   };
-  console.log("results", searchResults);
 
   return (
     <div className="dashboard background-color overflow-auto h-screen">
@@ -248,7 +246,7 @@ export const Dashboard = () => {
                 <div
                   key={result.publicKey.toString()}
                   className="each flex rounded shadow w-max text-pink-600 mb-5 bg-white search-result"
-                >
+                >{console.log("result111", result.publicKey.toString())}
                   <div className="sec self-center p-2 pr-1">
                     <img
                       data="picture"
@@ -266,7 +264,7 @@ export const Dashboard = () => {
                     </div>
                   </div>
                   <div className="sec self-center p-2">
-                    <Button onClick={() => sendFriendRequest(result.publicKey)}>
+                    <Button onClick={() => sendFriendRequest(result.account.authority)}>
                       <img
                         src="https://img.icons8.com/external-justicon-lineal-justicon/32/external-add-friend-notifications-justicon-lineal-justicon.png"
                         alt="add friend"

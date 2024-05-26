@@ -10,8 +10,6 @@ export const Profile = () => {
   const history = useHistory();
   const [connecting, setConnecting] = useState(false);
   const { connected, select } = useWallet();
-  const [userName, setUserName] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
 
   const {
     user,
@@ -19,6 +17,7 @@ export const Profile = () => {
     setShowModalUser,
     setShowModalPost,
     posts,
+    acceptFriendRequest,
   } = useBlog();
 
   const onConnect = () => {
@@ -112,16 +111,34 @@ export const Profile = () => {
       <main className="dashboard-main pb-4 container mx-auto px-6 flex relative mt-20">
         <div className="user-profile bg-purple shadow rounded">
           <div className="avatar w-24 h-24 rounded-full overflow-hidden mx-auto">
-            <img src={user.avatar} alt={`${user.name}'s avatar`} className="w-full h-full object-cover" />
+            <img src={user?.avatar} alt={`${user?.name}'s avatar`} className="w-full h-full object-cover" />
           </div>
           <div className="details mt-4 text-center">
-            <h2 className="text-xl font-bold">{user.name}</h2>
-            <p className="text-gray-600">Your address <br />{user.authority.toString()}</p>
+            <h2 className="text-xl font-bold">{user?.name}</h2>
+            <p className="text-gray-600">Your address <br />{user?.authority.toString()}</p>
             <p className="text-gray-600">Friends:<br />
-              {user.friends.map((friend, index) => (
+              {user?.friends.map((friend, index) => (
                 <div key={index}>{friend.toString()}</div>
               ))}
             </p>
+            {// if friendRequests is empty, don't show the button and <p>
+            user?.friendRequests.length > 0 ? (
+              <div>
+                <p>Friend Requests:</p>
+                {user.friendRequests.map((request, index) => (
+                  <div key={index}>
+                    {request.toString()}
+                    <Button
+                      onClick={() => acceptFriendRequest(request)}
+                      className="ml-2"
+                    >
+                      <img src="https://img.icons8.com/external-justicon-lineal-justicon/32/external-add-friend-notifications-justicon-lineal-justicon.png" alt="" />
+                    </Button>
+                    
+                  </div>
+                ))}
+              </div>
+            ) : null}
             <div className="user-posts">
               <h3>User Posts</h3>
               {posts.map((item) => (
