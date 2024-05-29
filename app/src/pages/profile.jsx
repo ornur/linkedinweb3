@@ -2,6 +2,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { PhantomWalletName } from "@solana/wallet-adapter-wallets";
 import { useEffect, useState } from "react";
 import { Button } from "src/components/Button";
+import { PostCard } from "src/components/PostCard";
 import { useBlog } from "src/context/Blog";
 import { useHistory } from "react-router-dom";
 import './profile.css';
@@ -10,8 +11,6 @@ export const Profile = () => {
   const history = useHistory();
   const [connecting, setConnecting] = useState(false);
   const { connected, select } = useWallet();
-  const [userName, setUserName] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
   const { disconnect } = useWallet();
 
   const {
@@ -150,43 +149,13 @@ export const Profile = () => {
                 </div>
               </div>
             ) : null}
-            <div className="user-posts">
-              <h3>User Posts</h3>
-              {posts.map((item, index) => (
-                <article
-                  className="post__card-2"
-                  onClick={() => {
-                    history.push(`/read-post/${item.publicKey.toString()}`);
-                  }}
-                  key={index}
-                >
-                  {item.account.authority.toString() === user.authority.toString() ? (
-                    <div className="post__card_-2">
-                      <div
-                        className="post__card__image-2"
-                        style={{
-                          backgroundImage: `url("https://user-images.githubusercontent.com/62637513/184338539-9cdbdc58-1e72-4c48-8203-0b7ec23d3eb0.png")`,
-                        }}
-                      ></div>
-                      <div>
-                        <div className="post__card_meta-2">
-                          <div className="post__card_cat">
-                            December 2, 2021<span className="dot"> </span>
-                            {item.account.title}{" "}
-                          </div>
-                          <p className="post__card_alttitle-2">
-                            {item.account.content}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    null
-                  )}
-                </article>
-              ))}
-            </div>
           </div>
+        </div>
+        <div className="all-posts row">
+          <h3>User Posts</h3> 
+          {posts.map((post) => (
+            <PostCard key={post.id} item={post} user={user} history={history} />
+          ))}
         </div>
       </main>
     </div>

@@ -259,11 +259,11 @@ a {
   content: " | ";
 }
 .author {
-  /* a {
+   a {
     color: #000;
     font-weight: bold;
     text-decoration: none;
-  } */
+  } 
 }
 @media (min-width: 40em) {
   .hentry {
