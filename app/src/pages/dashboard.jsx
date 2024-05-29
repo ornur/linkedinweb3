@@ -15,6 +15,7 @@ export const Dashboard = () => {
   const [userAvatar, setUserAvatar] = useState("");
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
+  const [postImage, setPostImage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -49,7 +50,11 @@ export const Dashboard = () => {
     setSearchResults(results);
     setShowSearchModal(true);
   };
-
+  function formatTimestamp(unixTimestamp) {
+    const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
+    const options = { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+    return new Intl.DateTimeFormat('en-GB', options).format(date);
+  }  
   return (
     <div className="dashboard background-color overflow-auto h-screen">
       <header className="fixed z-10 w-full h-14 shadow-md">
@@ -74,11 +79,8 @@ export const Dashboard = () => {
           </div>
           {connected ? (
             <div className="flex items-center">
-              <p className="font-bold text-sm ml-2 capitalize underlinepink">
+              <p className="font-bold text-sm ml-2 mr-4 capitalize underlinepink">
                 Home
-              </p>
-              <p className="font-bold text-sm ml-2 capitalize mr-4 underlinepink">
-                Blog
               </p>
               <img
                 src={user?.avatar}
@@ -167,25 +169,24 @@ export const Dashboard = () => {
             </article>
 
             <div className="all__posts">
-              {posts.map((item) => (
+              {posts.map((item, index) => (
                 <article
                   className="post__card-2"
                   onClick={() => {
                     history.push(`/read-post/${item.publicKey.toString()}`);
                   }}
-                  key={item.account.id}
+                  key={index}
                 >
                   <div className="post__card_-2">
                     <div
                       className="post__card__image-2"
                       style={{
-                        backgroundImage: `url("https://user-images.githubusercontent.com/62637513/184338539-9cdbdc58-1e72-4c48-8203-0b7ec23d3eb0.png")`,
-                      }}
+                        backgroundImage: `url(${item.account.image ? item.account.image : "https://user-images.githubusercontent.com/62637513/184338364-a14b7272-d1dc-49f3-9f43-3ac37dacbe85.png"})`,                      }}
                     ></div>
                     <div>
                       <div className="post__card_meta-2">
                         <div className="post__card_cat">
-                          December 2, 2021<span className="dot"> </span>
+                          {formatTimestamp(item.account.createdAt.toNumber())}<span className="dot"> </span>
                           {item.account.title}{" "}
                         </div>
                         <p className="post__card_alttitle-2">
@@ -227,9 +228,11 @@ export const Dashboard = () => {
             <PostForm
               postTitle={postTitle}
               postContent={postContent}
+              postImage={postImage}
               setPostTitle={setPostTitle}
               setPostContent={setPostContent}
-              onSubmit={() => createPost(postTitle, postContent)}
+              setPostImage={setPostImage}
+              onSubmit={() => createPost(postTitle, postContent, postImage)}
             />
           </div>
         </div>
@@ -242,9 +245,9 @@ export const Dashboard = () => {
               ×
             </span>
             <div className="search-results">
-              {searchResults.map((result) => (
+              {searchResults.map((result, index) => (
                 <div
-                  key={result.publicKey.toString()}
+                  key={index}
                   className="each flex rounded shadow w-max text-pink-600 mb-5 bg-white search-result"
                 >{console.log("result111", result.publicKey.toString())}
                   <div className="sec self-center p-2 pr-1">

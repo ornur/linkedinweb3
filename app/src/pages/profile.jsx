@@ -12,6 +12,7 @@ export const Profile = () => {
   const { connected, select } = useWallet();
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
+  const { disconnect } = useWallet();
 
   const {
     user,
@@ -118,7 +119,18 @@ export const Profile = () => {
           <div className="details mt-4 text-center">
             <h2 className="text-xl font-bold">{user?.name}</h2>
             <p className="text-gray-600">Your address <br />{user?.authority.toString()}</p>
-            <p className="text-gray-600">Friends:<br />
+            {//there disconnect button if user is connected
+              connected ? (
+                  <Button
+                    onClick={() => {
+                      disconnect();
+                      history.push("/");
+                    }}
+                  >
+                    Disconnect
+                  </Button>
+                ) : null}
+              <p className="text-gray-600">Friends:<br />
               {user?.friends.map((friend, index) => (
                 <div key={index}>{friend.toString()}</div>
               ))}
@@ -140,13 +152,13 @@ export const Profile = () => {
             ) : null}
             <div className="user-posts">
               <h3>User Posts</h3>
-              {posts.map((item) => (
+              {posts.map((item, index) => (
                 <article
                   className="post__card-2"
                   onClick={() => {
                     history.push(`/read-post/${item.publicKey.toString()}`);
                   }}
-                  key={item.account.id}
+                  key={index}
                 >
                   {item.account.authority.toString() === user.authority.toString() ? (
                     <div className="post__card_-2">

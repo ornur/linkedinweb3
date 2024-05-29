@@ -11,6 +11,8 @@ export async function getPostById(postId, program) {
       id: postId,
       title: post.title,
       content: post.content,
+      image: post.image,
+      createdAt: post.createdAt,
       userId,
     };
   } catch (e) {

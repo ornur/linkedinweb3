@@ -8,8 +8,10 @@ export const PostForm = (props) => {
     onSubmit,
     postTitle,
     postContent,
+    postImage,
     setPostContent,
     setPostTitle,
+    setPostImage,
     formHeader,
     buttonText = "Post",
   } = props;
@@ -33,7 +35,15 @@ export const PostForm = (props) => {
         rows={3}
         placeholder="Describe your post..."
         className="bg-white rounded-xl px-4 py-2 mt-3 black"
-      ></textarea>
+      >
+      </textarea>
+      <input
+        value={postImage}
+        onChange={(e) => setPostImage(e.target.value)}
+        type="text"
+        placeholder="Image URL"
+        className="bg-white rounded-3xl h-10 px-4 mt-3 black"
+      />
       <Button
         className="mt-3"
         disabled={!user}

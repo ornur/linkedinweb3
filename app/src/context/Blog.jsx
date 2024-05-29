@@ -102,7 +102,7 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
-  const createPost = async (title, content) => {
+  const createPost = async (title, content, image) => {
     if (program && publicKey) {
       setTransactionPending(true);
       try {
@@ -116,12 +116,13 @@ export const BlogProvider = ({ children }) => {
         );
 
         await program.methods
-          .createPost(title, content)
+          .createPost(title, content, image)
           .accounts({
             userAccount: userPda,
             postAccount: postPda,
             authority: publicKey,
             systemProgram: SystemProgram.programId,
+            clock: anchor.web3.SYSVAR_CLOCK_PUBKEY,
           })
           .rpc();
 

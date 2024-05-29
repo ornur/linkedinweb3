@@ -14,6 +14,11 @@ const PROGRAM_KEY = new PublicKey(idl.metadata.address);
 function getProgram(provider) {
   return new Program(idl, PROGRAM_KEY, provider);
 }
+function formatTimestamp(unixTimestamp) {
+  const date = new Date(unixTimestamp * 1000); // Convert seconds to milliseconds
+  const options = { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+  return new Intl.DateTimeFormat('en-GB', options).format(date);
+}
 
 export const FullPost = () => {
   const { id } = useParams();
@@ -42,12 +47,11 @@ export const FullPost = () => {
     }
   }, [connection, wallet]);
 
-
   return (
     <article className="hentry background-color">
       <div className="featured-image">
         <img
-          src="https://images.unsplash.com/photo-1531096187418-86ac6b31baea?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=9d6cd4e7c48dfc78f5e9c0fb07b692f0&auto=format&fit=crop&w=1350&q=80"
+          src={post?.image}
           alt=""
         />
       </div>
@@ -57,7 +61,9 @@ export const FullPost = () => {
           <span className="author">
             Written by <a href="#">{post?.author}</a>
           </span>{" "}
-          <span className="date">Monday, July 9, 2018</span>
+          <span className="date">
+            {post?.createdAt ? formatTimestamp(post.createdAt.toString()) : 'Invalid date'}
+          </span>
         </p>
       </div>
       <div className="entry-content">

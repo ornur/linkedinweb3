@@ -234,17 +234,22 @@ a {
   text-transform: uppercase;
   margin: 1em 0 0.5em;
   line-height: 1;
+  text-align: center;
 }
 .featured-image {
   grid-area: featimg;
+  max-width: 50%;
+  display: block;
+  margin: 0 auto;
 }
 .entry-meta {
+  margin: 0 auto;
   grid-area: meta;
   margin-bottom: 2em;
 }
 .entry-content {
   grid-area: content;
-  margin: 1em auto;
+  margin: 0 auto;
 }
 .author,
 .date {

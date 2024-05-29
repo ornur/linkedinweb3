@@ -24,11 +24,13 @@
         { "name": "postAccount", "isMut": true, "isSigner": false },
         { "name": "userAccount", "isMut": true, "isSigner": false },
         { "name": "authority", "isMut": true, "isSigner": true },
-        { "name": "systemProgram", "isMut": false, "isSigner": false }
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
       ],
       "args": [
         { "name": "title", "type": "string" },
-        { "name": "content", "type": "string" }
+        { "name": "content", "type": "string" },
+        { "name": "image", "type": "string" }
       ]
     },
     {
@@ -74,8 +76,10 @@
           { "name": "id", "type": "u8" },
           { "name": "title", "type": "string" },
           { "name": "content", "type": "string" },
+          { "name": "image", "type": "string" },
           { "name": "user", "type": "publicKey" },
-          { "name": "authority", "type": "publicKey" }
+          { "name": "authority", "type": "publicKey" },
+          { "name": "createdAt", "type": "i64" }
         ]
       }
     }
