@@ -15,22 +15,22 @@ Clone the project:
 ```bash
 git clone https://github.com/ornur/linkedinweb3
 ```
-<img src="https://github.com/ornur/linkedinweb3/screenshots/1.png" width="650" alt="1"><br><br>
+<img src="https://github.com/ornur/linkedinweb3/tree/master/screenshots/1.png" width="650" alt="1"><br><br>
 Go to the directory:
 ```bash
 cd linkedinweb3/app
 ```
-<img src="https://github.com/ornur/linkedinweb3/screenshots/2.png" width="650" alt="2"><br><br>
+<img src="https://github.com/ornur/linkedinweb3/tree/master/screenshots/2.png" width="650" alt="2"><br><br>
 Instal yarn dependicies:
 ```bash
 yarn install
 ```
-<img src="https://github.com/ornur/linkedinweb3/screenshots/3.png" width="650" alt="3"><br><br>
+<img src="https://github.com/ornur/linkedinweb3/tree/master/screenshots/3.png" width="650" alt="3"><br><br>
 Start the project:
 ```bash
 yarn dev
 ```
-<img src="https://github.com/ornur/linkedinweb3/screenshots/4.png" width="650" alt="4"><br><br>
+<img src="https://github.com/ornur/linkedinweb3/tree/master/screenshots/4.png" width="650" alt="4"><br><br>
 
 Then it will run in port 3000.<br>Go to browser and open `localhost:3000`
 
